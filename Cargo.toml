@@ -1,6 +1,7 @@
 [package]
-name = "glicko2-rust"
+name = "glicko2"
 version = "0.1.0"
+authors = ["Julian Speedie"]
 edition = "2021"
 
 [dependencies]

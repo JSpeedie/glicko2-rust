@@ -29,85 +29,33 @@
 //! scales and neither does the system constant (τ).
 
 
-use std::f64::consts::E;
-use std::f64::consts::PI;
+use std::f64::consts::{E, PI};
 
 
-struct G2Context {
-    tau: f64, // The system constant which "constrains the change in volatility over time"
+/// Returns the given original scale rating (*r*) converted to the Glicko-2 scale (μ). This
+/// function paired with the `rd_to_g2_scale()` function constitute Step 2 of the Glicko-2 algorithm.
+///
+/// #### Parameters:
+/// * `rating` the original scale rating (*r*) to be converted.
+/// #### Return:
+/// * An `f64` representing the rating converted to the Glicko-2 scale (μ).
+pub fn rating_to_g2_scale(rating: f64) -> f64 {
+    (rating * 173.7178) + 1500.0
 }
 
-pub struct G2Player {
-    rating: f64,
-    rd: f64, // The rating deviation of the player
-    /// Reflects "the degree of expected fluctuation in a player's rating"
-    pub vol: f64,
+
+/// Returns the given original scale rating deviation (RD) converted to the Glicko-2 scale (Φ).
+/// This function paired with the `rating_to_g2_scale()` function constitute Step 2 of the Glicko-2
+/// algorithm.
+///
+/// #### Parameters:
+/// * `rd` the original scale rating deviation (RD) to be converted.
+/// #### Return:
+/// * An `f64` representing the rating deviation converted to the Glicko-2 scale (Φ).
+pub fn rd_to_g2_scale(rd: f64) -> f64 {
+    rd * 173.7178
 }
 
-impl G2Player {
-    /// Returns the value of a given `G2Player`'s rating on the Glicko-2
-    /// scale (μ). This function paired with the `get_rd()` function constitute
-    /// Step 2 of the Glicko-2 algorithm.
-    ///
-    /// ##### Parameters:
-    /// * `self` a reference to the `G2Player` struct whose Glicko-2 scale
-    ///     rating (μ) will be returned.
-    ///
-    /// ##### Return:
-    /// * An `f64` representing the player's rating converted to the Glicko-2
-    ///     scale (μ).
-    pub fn get_rating(&self) -> f64 {
-        (self.rating * 173.7178) + 1500.0
-    }
-
-    /// Sets the `G2Player`'s rating on the original scale (*r*) based on the
-    /// given Glicko-2 scale value `new_rating` (μ). This function paired with
-    /// the `set_rd()` function consitute Step 8 of the Glicko-2 Algorithm.
-    ///
-    /// ##### Parameters:
-    /// * `self` a reference to the `G2Player` struct whose rating will be
-    ///     changed.
-    /// * `new_rating` the Glicko-2 scale rating (μ) to set `self`'s original
-    ///     scale rating (*r*) to.
-    ///
-    /// ##### Return:
-    /// * Nothing - the function modifies the `G2Player` struct.
-    pub fn set_rating(&mut self, new_rating: f64) {
-        self.rating = (new_rating - 1500.0) / 173.7178;
-    }
-
-    /// Returns the value of a given `G2Player`'s rating deviation on the
-    /// Glicko-2 scale (Φ). This function paired with the `get_rating()`
-    /// function constitute Step 2 of the Glicko-2 algorithm.
-    ///
-    /// ##### Parameters:
-    /// * `self` a reference to the `G2Player` struct whose Glicko-2 scale
-    ///     rating deviation (Φ) will be returned.
-    ///
-    /// ##### Return:
-    /// * An `f64` representing the player's rating deviation converted to the
-    ///     Glicko-2 scale (Φ).
-    pub fn get_rd(&self) -> f64 {
-        self.rd * 173.7178
-    }
-
-    /// Sets the `G2Player`'s rating deviation on the original scale (RD) based
-    /// on the given Glicko-2 scale value `new_rd` (Φ). This function paired
-    /// with the `set_rating()` function consitute Step 8 of the Glicko-2
-    /// Algorithm.
-    ///
-    /// ##### Parameters:
-    /// * `self` a reference to the `G2Player` struct whose rating deviation
-    ///     will be changed.
-    /// * `new_rd` the Glicko-2 scale value (Φ) to set `self`'s original scale
-    ///     rating deviation (RD) to.
-    ///
-    /// ##### Return:
-    /// * Nothing - the function modifies the `G2Player` struct.
-    pub fn set_rd(&mut self, new_rd: f64) {
-        self.rd = new_rd / 173.7178;
-    }
-}
 
 /// The Glicko-2 *g* function used in Steps 3, 4, 7, and by the *E* function.
 ///
@@ -137,6 +85,7 @@ pub fn _g(phi: f64) -> f64 {
 /// * An `f64` produced by the *E* function of the Glicko-2 algorithm. The
 ///     exact purpose or meaning of the value returned by this function is not
 ///     made clear by the Glicko-2 PDF.
+#[allow(non_snake_case)]
 pub fn _E(mu: f64, mu_j: f64, phi_j: f64) -> f64 {
 	1.0 / (1.0 + E.powf(-1.0 * _g(phi_j) * (mu - mu_j)))
 }
@@ -223,6 +172,7 @@ pub fn delta(mu: f64, opp_ratings: &[f64], opp_rds: &[f64], scores: &[f64],
 ///     representing the estimated improvement in rating of the player.
 /// #### Return:
 /// * An `f64` representing the player's new volatility (σ').
+#[allow(non_snake_case)]
 pub fn new_vol(phi: f64, sigma: f64, tau: f64, v: f64, delta: f64) -> f64 {
     // Step 5, item 1
     let a: f64 = (sigma.powi(2)).ln();
@@ -249,25 +199,25 @@ pub fn new_vol(phi: f64, sigma: f64, tau: f64, v: f64, delta: f64) -> f64 {
     }
 
     // Step 5, item 3
-    let mut fA = f(A);
-    let mut fB = f(B);
-    let mut fC;
+    let mut f_A = f(A);
+    let mut f_B = f(B);
+    let mut f_C;
 
     // Step 5, item 4
     while (B - A).abs() > epsilon {
         // item 4a
-        let C = A + (((A - B) * fA) / (fB - fA));
-        fC = f(C);
+        let C = A + (((A - B) * f_A) / (f_B - f_A));
+        f_C = f(C);
         // item 4b
-        if (fC * fB) <= 0.0 {
+        if (f_C * f_B) <= 0.0 {
             A = B;
-            fA = fB;
+            f_A = f_B;
         } else {
-            fA = fA / 2.0;
+            f_A /= 2.0;
         }
         // item 4c
         B = C;
-        fB = fC;
+        f_B = f_C;
     }
     // Step 5, item 5
     E.powf(A / 2.0)
@@ -330,12 +280,38 @@ pub fn update_player(mu: f64, prov_phi: f64, opp_ratings: &[f64],
     let new_phi = 1.0 / ((1.0 / prov_phi.powi(2)) + (1.0 / v)).sqrt();
     let mut new_mu: f64 = 0.0;
 
-    for j in (0..opp_ratings.len()) {
+    for j in 0..opp_ratings.len() {
         new_mu += _g(opp_rds[j]) * (scores[j] - _E(mu, opp_ratings[j], opp_rds[j]));
     }
     new_mu = (mu + new_phi.powi(2)) * new_mu;
 
     (new_phi, new_mu)
+}
+
+
+/// Returns the given Glicko-2 scale rating (μ) converted to the original scale (*r*). This
+/// function paired with the `rd_to_original_scale()` function constitute Step 8 of the Glicko-2
+/// algorithm.
+///
+/// #### Parameters:
+/// * `rating` the Glicko-2 scale rating (μ) to be converted.
+/// #### Return:
+/// * An `f64` representing the rating converted to the original scale (*r*).
+pub fn rating_to_original_scale(rating: f64) -> f64 {
+    (rating - 1500.0) / 173.7178
+}
+
+
+/// Returns the given Glicko-2 scale rating deviation (Φ) converted to the original scale (RD).
+/// This function paired with the `rating_to_original_scale()` function constitute Step 8 of the
+/// Glicko-2 algorithm.
+///
+/// #### Parameters:
+/// * `rd` the Glicko-2 scale rating deviation (Φ) to be converted.
+/// #### Return:
+/// * An `f64` representing the rating deviation converted to the original scale (RD).
+pub fn rd_to_original_scale(rd: f64) -> f64 {
+    rd / 173.7178
 }
 
 
