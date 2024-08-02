@@ -52,7 +52,7 @@ like:
 cargo test
 ```
 ```
-    Finished \`test\` profile [unoptimized + debuginfo] target(s) in 0.00s
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
      Running unittests src/lib.rs (target/debug/deps/glicko2-61df8c83d8ed253e)
 
 running 11 tests
