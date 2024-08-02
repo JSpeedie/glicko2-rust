@@ -415,4 +415,18 @@ mod tests {
         assert_f64_near!(new_phi, 0.8721991881307343);
         assert_f64_near!(new_mu, -0.20694096667525494);
     }
+
+    #[test]
+    fn scale_rating_to_original_scale() {
+        let mu: f64 = -0.20694096667525494;
+
+        assert_f64_near!(rating_to_original_scale(mu), 1464.0506705393013);
+    }
+
+    #[test]
+    fn scale_rd_to_original_scale() {
+        let phi: f64 = 0.8721991881307343;
+
+        assert_f64_near!(rd_to_original_scale(phi), 151.51652412385727);
+    }
 }
