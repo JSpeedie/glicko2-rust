@@ -5,3 +5,4 @@ authors = ["Julian Speedie"]
 edition = "2021"
 
 [dependencies]
+assert_float_eq = "1.1.3"

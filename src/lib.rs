@@ -315,13 +315,28 @@ pub fn rd_to_original_scale(rd: f64) -> f64 {
 }
 
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-// 
-//     #[test]
-//     fn it_works() {
-//         let result = add(2, 2);
-//         assert_eq!(result, 4);
-//     }
-// }
+#[cfg(test)]
+mod tests {
+    use super::*; // Use all items from parent module
+    use assert_float_eq::*; // Get float comparison functions
+
+    #[test]
+    fn scale_rating_to_g2_scale() {
+        let ratings: [f64; 4] = [1500.0, 1400.0, 1550.0, 1700.0];
+
+        assert_f64_near!(rating_to_g2_scale(ratings[0]), 0.0);
+        assert_f64_near!(rating_to_g2_scale(ratings[1]), -0.5756462492617337);
+        assert_f64_near!(rating_to_g2_scale(ratings[2]), 0.28782312463086684);
+        assert_f64_near!(rating_to_g2_scale(ratings[3]), 1.1512924985234674);
+    }
+
+    #[test]
+    fn scale_rd_to_g2_scale() {
+        let rds: [f64; 4] = [200.0, 30.0, 100.0, 300.0];
+
+        assert_f64_near!(rd_to_g2_scale(rds[0]), 1.1512924985234674);
+        assert_f64_near!(rd_to_g2_scale(rds[1]), 0.1726938747785201);
+        assert_f64_near!(rd_to_g2_scale(rds[2]), 0.5756462492617337);
+        assert_f64_near!(rd_to_g2_scale(rds[3]), 1.726938747785201);
+    }
+}
