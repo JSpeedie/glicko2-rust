@@ -40,7 +40,7 @@ use std::f64::consts::{E, PI};
 /// #### Return:
 /// * An `f64` representing the rating converted to the Glicko-2 scale (μ).
 pub fn rating_to_g2_scale(rating: f64) -> f64 {
-    (rating * 173.7178) + 1500.0
+    (rating - 1500.0) / 173.7178
 }
 
 
@@ -53,7 +53,7 @@ pub fn rating_to_g2_scale(rating: f64) -> f64 {
 /// #### Return:
 /// * An `f64` representing the rating deviation converted to the Glicko-2 scale (Φ).
 pub fn rd_to_g2_scale(rd: f64) -> f64 {
-    rd * 173.7178
+    rd / 173.7178
 }
 
 
@@ -298,7 +298,7 @@ pub fn update_player(mu: f64, prov_phi: f64, opp_ratings: &[f64],
 /// #### Return:
 /// * An `f64` representing the rating converted to the original scale (*r*).
 pub fn rating_to_original_scale(rating: f64) -> f64 {
-    (rating - 1500.0) / 173.7178
+    (rating * 173.7178) + 1500.0
 }
 
 
@@ -311,7 +311,7 @@ pub fn rating_to_original_scale(rating: f64) -> f64 {
 /// #### Return:
 /// * An `f64` representing the rating deviation converted to the original scale (RD).
 pub fn rd_to_original_scale(rd: f64) -> f64 {
-    rd / 173.7178
+    rd * 173.7178
 }
 
 
