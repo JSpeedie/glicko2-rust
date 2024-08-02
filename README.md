@@ -38,3 +38,21 @@ use glicko2::*;
 Make sure the module you use in this line of code (i.e. `use glicko2 ...`)
 matches the dependency name in your Cargo.toml (`glicko2 = ...`). The name
 does not need to match the name of the local directory.
+
+## Testing the Library
+
+This library has both unit tests and integration tests. You can run them as you
+would for any Rust project:
+
+```bash
+cargo test
+```
+
+## Library Documentation
+
+This library is complete with documentation. You can view the documentation as
+you would for any Rust project:
+
+```bash
+cargo doc --open
+```
