@@ -392,4 +392,12 @@ mod tests {
 
         assert_f64_near!(new_vol(phi, sigma, tau, v, delta), 0.0599959842864885);
     }
+
+    #[test]
+    fn prov_phi() {
+        let phi: f64 = 1.1512924985234674;
+        let new_sigma: f64 = 0.0599959842864885;
+
+        assert_f64_near!(update_rd(phi, new_sigma), 1.1528546895801364);
+    }
 }
