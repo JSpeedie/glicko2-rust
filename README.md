@@ -42,10 +42,45 @@ does not need to match the name of the local directory.
 ## Testing the Library
 
 This library has both unit tests and integration tests. You can run them as you
-would for any Rust project:
+would for any Rust project using `cargo test`. Here's what the output may look
+like:
 
 ```bash
 cargo test
+```
+```
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+     Running unittests src/lib.rs (target/debug/deps/glicko2-61df8c83d8ed253e)
+
+running 11 tests
+test tests::delta_quantity ... ok
+test tests::e_function ... ok
+test tests::g_function ... ok
+test tests::new_volatility ... ok
+test tests::new_rating_and_rd ... ok
+test tests::prov_phi ... ok
+test tests::scale_rating_to_original_scale ... ok
+test tests::scale_rd_to_original_scale ... ok
+test tests::scale_rating_to_g2_scale ... ok
+test tests::v_quantity ... ok
+test tests::scale_rd_to_g2_scale ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/integration_test.rs (target/debug/deps/integration_test-f2eba1d7ef98fb33)
+
+running 1 test
+test glicko2_example ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests glicko2
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
 ```
 
 ## Library Documentation
@@ -56,3 +91,6 @@ you would for any Rust project:
 ```bash
 cargo doc --open
 ```
+
+The root HTML page for the documentation should open up in your default web
+browser.
