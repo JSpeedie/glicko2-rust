@@ -400,4 +400,19 @@ mod tests {
 
         assert_f64_near!(update_rd(phi, new_sigma), 1.1528546895801364);
     }
+
+    #[test]
+    fn new_rating_and_rd() {
+        let mu: f64 = 0.0;
+        let prov_phi: f64 = 1.1528546895801364;
+        let mus: [f64; 3] = [-0.5756462492617337, 0.28782312463086684, 1.1512924985234674];
+        let phis: [f64; 3] = [0.1726938747785201, 0.5756462492617337, 1.726938747785201];
+        let scores: [f64; 3] = [1.0, 0.0, 0.0];
+        let v: f64 = 1.7789770897239976;
+
+        let (new_phi, new_mu) = update_player(mu, prov_phi, &mus, &phis, &scores, v);
+
+        assert_f64_near!(new_phi, 0.8721991881307343);
+        assert_f64_near!(new_mu, -0.20694096667525494);
+    }
 }
