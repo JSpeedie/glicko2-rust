@@ -316,7 +316,7 @@ pub fn rd_to_original_scale(rd: f64) -> f64 {
 
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::*; // Use all items from parent module
     use assert_float_eq::*; // Get float comparison functions
 
