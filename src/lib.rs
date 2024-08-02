@@ -381,4 +381,15 @@ mod tests {
 
         assert_f64_near!(delta(mu, &mus, &phis, &scores, v), -0.4839332609836549);
     }
+
+    #[test]
+    fn new_volatility() {
+        let phi: f64 = 1.1512924985234674;
+        let sigma: f64 = 0.06;
+        let tau: f64 = 0.5;
+        let v: f64 = 1.7789770897239976;
+        let delta: f64 = -0.4839332609836549;
+
+        assert_f64_near!(new_vol(phi, sigma, tau, v, delta), 0.0599959842864885);
+    }
 }
