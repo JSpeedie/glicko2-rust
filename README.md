@@ -39,6 +39,9 @@ Make sure the module you use in this line of code (i.e. `use glicko2 ...`)
 matches the dependency name in your Cargo.toml (`glicko2 = ...`). The name
 does not need to match the name of the local directory.
 
+&nbsp;
+&nbsp;
+
 ## Testing the Library
 
 This library has both unit tests and integration tests. You can run them as you
@@ -48,7 +51,8 @@ like:
 ```bash
 cargo test
 ```
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.00s
+```
+    Finished \`test\` profile [unoptimized + debuginfo] target(s) in 0.00s
      Running unittests src/lib.rs (target/debug/deps/glicko2-61df8c83d8ed253e)
 
 running 11 tests
@@ -80,6 +84,9 @@ running 0 tests
 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
 ```
+
+&nbsp;
+&nbsp;
 
 ## Library Documentation
 
