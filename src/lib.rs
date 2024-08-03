@@ -179,7 +179,7 @@ pub fn new_vol(phi: f64, sigma: f64, tau: f64, v: f64, delta: f64) -> f64 {
     } else {
         let mut k: f64 = 1.0;
         while f(a - (k * tau)) < 0.0 {
-            k = k + 1.0;
+            k += 1.0;
         }
         B = a - (k * tau);
     }
@@ -252,6 +252,7 @@ pub fn pre_rating_period_value(phi: f64, new_sigma: f64) -> f64 {
 /// #### Return:
 /// * An `(f64, f64)` tuple containing the player-of-interest's new rating and rating deviation on
 ///     the Glicko-2 scale (Φ', μ').
+#[allow(clippy::assign_op_pattern)]
 pub fn new_rating_and_rd(mu: f64, phi_star: f64, opp_ratings: &[f64], opp_rds: &[f64],
                          scores: &[f64], v: f64) -> (f64, f64) {
 

@@ -105,3 +105,49 @@ cargo doc --open
 
 The root HTML page for the documentation should open up in your default web
 browser.
+
+&nbsp;
+&nbsp;
+
+## Linting
+
+This project is linted by `clippy`. The process for linting is quite simple.
+First, we want to make sure `clippy` is installed:
+
+```bash
+rustup component list | grep clippy
+```
+```
+clippy-x86_64-unknown-linux-gnu (installed)
+```
+
+If the output of this command is empty, we need to install clippy. We can do so
+with the following commands:
+
+```bash
+rustup update
+rustup component add clippy
+```
+
+Once we have clippy installed, we can lint our program with the following
+command:
+
+```bash
+cargo clippy
+```
+```
+    Checking glicko2 v0.1.0 (/home/me/glicko2-rust)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.07s
+```
+
+If the code passed all lints, the output will look similar to the example
+output shown above.
+
+To check the project more thoroughly, you can use:
+
+```bash
+cargo clippy -- -W clippy:pedantic
+```
+
+This typically lints a little too aggressively for my taste, but it's worth
+checking every once in a while.
