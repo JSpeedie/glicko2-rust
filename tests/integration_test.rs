@@ -14,16 +14,14 @@ mod integration_tests {
         let opp_rds: [f64; 3] = [30.0, 100.0, 300.0];
         let scores: [f64; 3] = [1.0, 0.0, 0.0];
 
-        let mut mus: [f64; 3] = [0.0; 3];
-        let mut phis: [f64; 3] = [0.0; 3];
-        let mut gs: [f64; 3] = [0.0; 3];
-        let mut es: [f64; 3] = [0.0; 3];
-
         // Check Step 2
         // Convert all player-of-interest rating and RD and all the opponent ratings and RDs to the
         // Glicko-2 scale.
         let mu = rating_to_g2_scale(rating);
         let phi = rd_to_g2_scale(rd);
+
+        let mut mus: [f64; 3] = [0.0; 3];
+        let mut phis: [f64; 3] = [0.0; 3];
 
         for i in 0..opp_ratings.len() {
             mus[i] = rating_to_g2_scale(opp_ratings[i]);
@@ -37,6 +35,9 @@ mod integration_tests {
         assert_f64_near!(phis[0], 0.1726938747785201);
         assert_f64_near!(phis[1], 0.5756462492617337);
         assert_f64_near!(phis[2], 1.726938747785201);
+
+        let mut gs: [f64; 3] = [0.0; 3];
+        let mut es: [f64; 3] = [0.0; 3];
 
         // Check `g()` calculations
         // Calculate g(Φ_j) for all phis
@@ -71,14 +72,14 @@ mod integration_tests {
         let new_sigma = new_vol(phi, sigma, tau, v, delta);
         assert_f64_near!(new_sigma, 0.0599959842864885);
 
-        // Check provisional phi (Φ*) calculations
-        // Calculate the provisional phi (Φ*) given (Φ, σ')
-        let prov_phi = update_rd(phi, new_sigma);
-        assert_f64_near!(prov_phi, 1.1528546895801364);
+        // Check pre-rating period value (Φ*) calculations
+        // Calculate the new pre-rating period value (Φ*) given (Φ, σ')
+        let phi_star = pre_rating_period_value(phi, new_sigma);
+        assert_f64_near!(phi_star, 1.1528546895801364);
 
         // Check new phi and mu (Φ', μ') calculations
         // Calculate the new phi and new mu (Φ', μ') given (μ, Φ*, μ_j, Φ_j, s_j, v)
-        let (new_phi, new_mu) = update_player(mu, prov_phi, &mus, &phis, &scores, v);
+        let (new_phi, new_mu) = new_rating_and_rd(mu, phi_star, &mus, &phis, &scores, v);
         assert_f64_near!(new_phi, 0.8721991881307343);
         assert_f64_near!(new_mu, -0.20694096667525494);
 

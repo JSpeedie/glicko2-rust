@@ -39,6 +39,12 @@ Make sure the module you use in this line of code (i.e. `use glicko2 ...`)
 matches the dependency name in your Cargo.toml (`glicko2 = ...`). The name
 does not need to match the name of the local directory.
 
+Now that you are able to make use of the library, you're ready to make some
+Glicko-2 calculations! An example is provided in the documentation that walks
+you through an example series of function calls representing the calculation
+of a player's new rating and rating deviation given a series of games. Take
+a look at the section below on library documentation to learn more.
+
 &nbsp;
 &nbsp;
 
