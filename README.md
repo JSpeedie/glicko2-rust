@@ -63,16 +63,16 @@ cargo test
 
 running 11 tests
 test unit_tests::e_function ... ok
+test unit_tests::calculate_new_rating_and_rd ... ok
 test unit_tests::new_volatility ... ok
-test unit_tests::delta_quantity ... ok
-test unit_tests::prov_phi ... ok
-test unit_tests::new_rating_and_rd ... ok
 test unit_tests::g_function ... ok
+test unit_tests::new_pre_rating_period_value ... ok
 test unit_tests::scale_rating_to_original_scale ... ok
-test unit_tests::scale_rating_to_g2_scale ... ok
+test unit_tests::delta_quantity ... ok
+test unit_tests::scale_rd_to_g2_scale ... ok
 test unit_tests::scale_rd_to_original_scale ... ok
 test unit_tests::v_quantity ... ok
-test unit_tests::scale_rd_to_g2_scale ... ok
+test unit_tests::scale_rating_to_g2_scale ... ok
 
 test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
 
